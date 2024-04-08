@@ -1,0 +1,149 @@
+{% extends "layout1.html" %}
+
+{% block titulo %}
+    Facturación
+
+{%endblock%}
+
+{% block body%}
+<nav>
+    <div class="nav-left">
+        <ul>
+            <li><img src="https://i.ibb.co/xm8T9b8/logopagina.png" style="width:215px"></li>
+        </ul>
+    </div>
+    <a href="/">salir<img src="https://www.pngmart.com/files/10/Exit-PNG-Image.png" width="80px"></a>
+</nav>
+
+
+<form action="/guardarrecibo " method="post">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-4">
+    <h2>REGISTRO DE FACTURAS</h2>
+    <div>
+        <label for="nombre">Nombre</label>
+        <input type="text" class="form-control" name="nombre" id="nombre">
+    </div>
+    <div>
+        <label for="cedula">Cedula</label>
+        <input type="text" class="form-control" name="cedula" id="cedula">
+    </div>
+    <div >
+        <label for="valor">Valor</label>
+        <input type="text" class="form-control" name="valor" id="valor">
+    </div>
+    <div>
+        <label for="mes">mes actual</label>
+        <input type="month" class="form-control" name="mes" id="mes">
+    </div>
+    <div>
+        <label for="fecha1">Fecha vencimiento</label>
+        <input type="date" class="form-control" name="fecha1" id="fecha1">
+    </div>
+    <div>
+        <p>Tipo de recibo:
+            <select name="datos">
+            <option value="Agua">Agua</option>
+            <option value="Energia">Energia</option>
+            <option value="Gas">Gas</option>
+            </select>
+            </p>
+    </div>
+    <div >
+        <p>Torre:
+            <select name="torre">
+            <option value="1">Torre 1</option>
+            <option value="2">Torre 2</option>
+            <option value="3">Torre 3</option>
+            <option value="4">Torre 4</option>
+            </select>
+            </p>
+    </div>
+    <div>
+        <p>Grupo de torre:
+            <select name="piso">
+            <option value="1">sección 1</option>
+            <option value="2">sección 2</option>
+            <option value="3">sección 3</option>
+            </select>
+            </p>
+    </div>
+    <div>
+        <label for="personas">Personas</label>
+        <input type="text" class="form-control" name="personas" id="personas">
+    </div>
+    <br>
+    <div class="form-group d-grip gap-2">
+        <button id="boton_form" class="btn btn-success" type="submit"><i class="fa-sharp fa-solid fa-floppy-disk"></i> GUARDAR </button>
+    </div>
+    </div>
+            </div>
+        </div>
+        <br>
+        <br>
+        <form id="tablas" action="/datos", method="post">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="row">
+                    <table id="tabla_resultados" class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th><i class="fa-sharp fa-solid fa-circle-user"></i> Nombre</th>
+                                <th><i class="fa-sharp fa-solid fa-address-card"></i> Cedula</th>
+                                <th><i class="fa-sharp fa-solid fa-money-bill"></i> Valor</th>
+                                <th><i class="fa-sharp fa-solid fa-calendar-days"></i> Mes</th>
+                                <th>Vencimiento</th>
+                                <th>Torre</th>
+                                <th>Grupo</th>
+                                <th>Personas</th>
+                                <th scope="col"><i class="fa-sharp fa-solid fa-gears"></i>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for usuarios in usuarios %}
+                            <tr>
+                                <td id="tabla_nombre{{usuarios[0]}}">{{usuarios[1]}}</td>
+                                <td id="tabla_cedula{{usuarios[0]}}">{{usuarios[2]}}</td>
+                                <td id="taba_valor{{usuarios[0]}}">{{usuarios[3]}}</td>
+                                <td id="taba_mes{{usuarios[0]}}">{{usuarios[4]}}</td>
+                                <td id="taba_vencimiento{{usuarios[0]}}">{{usuarios[5]}}</td>
+                                <td id="taba_torre{{usuarios[0]}}">{{usuarios[6]}}</td>
+                                <td id="taba_grupo{{usuarios[0]}}">{{usuarios[7]}}</td>
+                                <td id="taba_personas{{usuarios[0]}}">{{usuarios[8]}}</td>
+                                <td>
+                                    <a onclick="return confirm('¿Realmente desea eliminar este registro?')" href="/eliminar_persona/{{ usuarios[0] }}" class="btn btn-danger bt-delete btn-sm"><i class="fa-solid fa-trash-can"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+<script>
+    $(document).ready( function () {
+    $('#tabla_resultados').DataTable({  "aLengthMenu":[[3,5,10,25,-1],[3,5,10,25,"ALL"]]
+    ,"iDisplayLength":3,colReorder: true,
+    "language":{
+        "lengthMenu": "Mostrar _MENU_ registros por página",
+        "search": "Buscar",
+        "zeroRecords": "Ningún Registro Encontrado",
+        "info": "Página _PAGE_ de _PAGES_",
+        "infoEmpty": "Ningún Registro Disponible",
+        "infoFiltered": "(Filtrado de _MAX_ registro(s) totales)",
+        "paginate": {
+            "first": "Primero",
+            "last":"Ultimo",
+            "next": "Siguiente",
+            "previous":"Anterior"
+            },
+         }
+    });
+    } );
+</script>
+<script src="{{url_for('static', filename='js/obtenerDatos.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+</form>
+{% endblock %}
